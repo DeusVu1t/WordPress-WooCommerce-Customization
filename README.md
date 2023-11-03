@@ -11,4 +11,4 @@ This GitHub repository showcases one of my recent projects as of November 3, 202
 
 This project marks my first venture into such customizations, and I am proud to say that I have met the client's requirements effectively. The changes provide a seamless and user-friendly shopping experience.
 
-Feel free to adjust the description to your preferences, and best of luck with your GitHub project!
+
