@@ -1,0 +1,1 @@
+{"version":3,"sources":["search-results.css"],"names":[],"mappings":"AAAA;EACE,cAAc;EACd,gCAAgC;EAChC,yDAAyD,EAAE","file":"search-results.css","sourcesContent":[".search-results .content {\n  display: grid;\n  grid-gap: var(--padding-medium);\n  padding: var(--padding-small) var(--padding-sides-small); }\n"]}

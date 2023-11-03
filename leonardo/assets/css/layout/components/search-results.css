@@ -1,0 +1,6 @@
+.search-results .content {
+  display: grid;
+  grid-gap: var(--padding-medium);
+  padding: var(--padding-small) var(--padding-sides-small); }
+
+/*# sourceMappingURL=search-results.css.map */
