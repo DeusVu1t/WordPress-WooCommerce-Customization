@@ -37,7 +37,7 @@ require_once 'functions/woocommerce-custom-product-fields.php';
 require_once 'functions/woocommerce-custom-checkout-fields.php';
 require_once 'functions/woocommerce-custom-payment.php';
 
-
+require_once 'functions/work.php';
 require_once 'functions/woo-new-functions.php';
 
 
@@ -79,3 +79,11 @@ function before_calculate_totals($cart_obj)
     }
 }
 
+
+function custom_add_to_cart_text($text) {
+   
+    $text = 'do koszyka';
+    return $text;
+}
+
+add_filter('woocommerce_product_single_add_to_cart_text', 'custom_add_to_cart_text');

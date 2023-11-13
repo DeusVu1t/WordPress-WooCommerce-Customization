@@ -31,7 +31,7 @@ if ($terms[0]->parent > 0) {
         array(
             'taxonomy' => 'product_cat',
             'hide_empty' => false,
-            'include' => $terms[0]->parent
+            'include' => $terms[0]->parent,
         )
     )[0];
     $category_slug = $parent_category->slug;
@@ -40,32 +40,32 @@ if ($terms[0]->parent > 0) {
 }
 ?>
 
-<div class="product-card" id="product-<?php the_ID(); ?>">
+<div class="product-card" id="product-<?php the_ID();?>">
     <div class="content">
-        <div class="category-icon">
-            <?php if ($category_slug === 'torty') : ?>
-                <img src="<?php bloginfo('template_directory'); ?>/assets/img/cake.svg" alt="">
-            <?php else : ?>
-                <img src="<?php bloginfo('template_directory'); ?>/assets/img/cupcake.svg" alt="">
-            <?php endif; ?>
-        </div>
+       <!--  <div class="category-icon">
+            <?php if ($category_slug === 'torty'): ?>
+                <img src="<?php bloginfo('template_directory');?>/assets/img/cake.svg" alt="">
+            <?php else: ?>
+                <img src="<?php bloginfo('template_directory');?>/assets/img/cupcake.svg" alt="">
+            <?php endif;?>
+        </div> -->
         <div class="images">
 
 
             <?php $image = wp_get_attachment_image_src(
-                get_post_thumbnail_id($loop->post->ID),
-                'single-post-thumbnail'
-            ); ?>
+    get_post_thumbnail_id($loop->post->ID),
+    'single-post-thumbnail'
+);?>
             <div class="big-photo">
-                <?php if ($image) : ?>
-                    <img src="<?= $image[0]; ?>">
-                <?php else : ?>
-                    <img src="<?php bloginfo('template_directory'); ?>/assets/img/no-photo.jpg">
-                <?php endif; ?>
+                <?php if ($image): ?>
+                    <img src="<?=$image[0];?>">
+                <?php else: ?>
+                    <img src="<?php bloginfo('template_directory');?>/assets/img/no-photo.jpg">
+                <?php endif;?>
             </div>
 
-            <?php $attachment_ids = $product->get_gallery_attachment_ids(); ?>
-            <?php if (count($attachment_ids) > 0) : ?>
+            <?php $attachment_ids = $product->get_gallery_attachment_ids();?>
+            <?php if (count($attachment_ids) > 0): ?>
                 <div class="gallery">
                     <div class="navigation">
                         <div class="nav prev">
@@ -82,200 +82,200 @@ if ($terms[0]->parent > 0) {
                     <div class="swiper-container">
                         <div class="swiper-wrapper">
 
-                            <?php foreach ($attachment_ids as $attachment_id) : ?>
+                            <?php foreach ($attachment_ids as $attachment_id): ?>
 
                                 <div class="swiper-slide">
                                     <div class="slide-image">
-                                        <img src="<?= wp_get_attachment_url($attachment_id); ?>" alt="">
+                                        <img src="<?=wp_get_attachment_url($attachment_id);?>" alt="">
                                     </div>
                                 </div>
 
-                            <?php endforeach; ?>
+                            <?php endforeach;?>
 
                         </div>
                     </div>
                 </div>
-            <?php endif; ?>
+            <?php endif;?>
 
             <?php
-            /**
-             * Hook: woocommerce_before_single_product_summary.
-             *
-             * @hooked woocommerce_show_product_sale_flash - 10
-             * @hooked woocommerce_show_product_images - 20
-             */
-            // do_action( 'woocommerce_before_single_product_summary' );
-            ?>
+/**
+ * Hook: woocommerce_before_single_product_summary.
+ *
+ * @hooked woocommerce_show_product_sale_flash - 10
+ * @hooked woocommerce_show_product_images - 20
+ */
+// do_action( 'woocommerce_before_single_product_summary' );
+?>
         </div>
-        <div class="text <?php if ($product->price === '') : ?>no-price-container<?php endif; ?>">
-            
+        <div class="text <?php if ($product->price === ''): ?>no-price-container<?php endif;?>">
+
             <div class="text-wrapper typo">
-                <h1><?php the_title(); ?></h1>
-                <?php the_content(); ?>
+                <h1><?php the_title();?></h1>
+                <?php the_content();?>
             </div>
 
-            <?php if ($product->is_type('variable')) : ?>
-                <?php $variations = $product->get_available_variations(); ?>
-                <div class="variant-select-title">
-                    <p>Wybierz rozmiar:</p>
-                </div>
+            <?php if ($product->is_type('variable')): ?>
+                <?php $variations = $product->get_available_variations();?>
+               <div class="title title-big">
+                                        <p>Wybierz wielkość</p>
+                                    </div>
                 <div class="variant-select">
-                    <?php foreach ($variations as $variant) : ?>
-                        <div class="item" data-value="<?= $variant['attributes']['attribute_rozmiar']; ?>">
+                    <?php foreach ($variations as $variant): ?>
+                        <div class="item" data-value="<?=$variant['attributes']['attribute_rozmiar'];?>">
                             <div class="label">
-                                <p class="variant"><?= $variant['attributes']['attribute_rozmiar']; ?></p>
-                                <p class="desc"><?= strip_tags($variant['variation_description']); ?></p>
+                                <p class="variant"><?=$variant['attributes']['attribute_rozmiar'];?></p>
+                                <p class="desc"><?=strip_tags($variant['variation_description']);?></p>
                             </div>
                             <div class="price">
-                                <p><?= $variant['price_html']; ?></p>
+                                <p><?=$variant['price_html'];?></p>
                             </div>
                         </div>
-                    <?php endforeach; ?>
+                    <?php endforeach;?>
                 </div>
-            <?php else : ?>
+            <?php else: ?>
                 <div id="single-product-price">
-                    <?= $product->price; ?>&nbsp;<?= get_woocommerce_currency_symbol(); ?>
+                    <?=$product->price;?>&nbsp;<?=get_woocommerce_currency_symbol();?>
                 </div>
-            <?php endif; ?>
+            <?php endif;?>
             <form class="cart" action="<?php echo esc_url(apply_filters('woocommerce_add_to_cart_form_action', $product->get_permalink())); ?>" method="post" enctype='multipart/form-data'>
 
                 <div class="extra-product-data">
                     <div class="items">
                         <!-- Smak -->
                         <div class="configurator-feature">
-                            <?php if (get_field('addition_taste') == 1) : ?>
+                            <?php if (get_field('addition_taste') == 1): ?>
                                 <div class="configurator-item">
                                     <div class="title title-big">
-                                        <p>Wybierz opcje smakową</p>
+                                        <p>Wybierz smak:</p>
                                     </div>
 
-                                    <?php if (have_rows('z_naglowkuem')) : $tasteIndex = 0; ?>
-                                        <div class="tastes-block">
-                                            <p class="validation-error error">Proszę wybrać smak</p>
-                                            <?php while (have_rows('z_naglowkuem')) : the_row();  ?>
+                                    <?php if (have_rows('z_naglowkuem')): $tasteIndex = 0;?>
+		                                        <div class="tastes-block">
+		                                            <p class="validation-error error">Proszę wybrać smak</p>
+		                                            <?php while (have_rows('z_naglowkuem')): the_row();?>
 
-                                                <div class="title">
-                                                    <p><?php the_sub_field('naglowek'); ?></p>
-                                                </div>
-                                                <div class="smaki-grid">
-                                                    <?php if (have_rows('taste_repeater')) : ?>
+				                                                <div class="title">
+				                                                    <p><?php the_sub_field('naglowek');?></p>
+				                                                </div>
+				                                                <div class="smaki-grid">
+				                                                    <?php if (have_rows('taste_repeater')): ?>
 
-                                                        <?php while (have_rows('taste_repeater')) : the_row(); ?>
-                                                            <?php $tasteClass = 'taste-checkbox-' . $tasteIndex; // Уникальный класс для вкуса 
-                                                            ?>
-                                                            <div class="extra-product-data-input">
-                                                                <div class="<?php echo $tasteClass; ?> taste-check checkbox">
-                                                                    <input type="checkbox" class="taste-checkbox box" data-class="<?php echo $tasteIndex; ?>" name="selected_taste[]" value="<?php the_sub_field('nazwa_smaku'); ?>">
-                                                                    <div class="label"><?php the_sub_field('nazwa_smaku'); ?></div>
-                                                                </div>
+				                                                        <?php while (have_rows('taste_repeater')): the_row();?>
+						                                                            <?php $tasteClass = 'taste-checkbox-' . $tasteIndex; // Уникальный класс для вкуса
+            ?>
+						                                                            <div class="extra-product-data-input">
+						                                                                <div class="<?php echo $tasteClass; ?> taste-check checkbox">
+						                                                                    <input type="checkbox" class="taste-checkbox box" data-class="<?php echo $tasteIndex; ?>" name="selected_taste[]" value="<?php the_sub_field('nazwa_smaku');?>">
+						                                                                    <div class="label"><?php the_sub_field('nazwa_smaku');?></div>
+						                                                                </div>
 
-                                                            </div>
-                                                            <?php $tasteIndex++; // Увеличиваем индекс 
-                                                            ?>
-                                                        <?php endwhile; ?>
-                                                    <?php endif; ?>
-                                                </div>
-                                            <?php endwhile; ?>
+						                                                            </div>
+						                                                            <?php $tasteIndex++; // Увеличиваем индекс
+            ?>
+						                                                        <?php endwhile;?>
+				                                                    <?php endif;?>
+		                                                </div>
+		                                            <?php endwhile;?>
                                         </div>
-                                    <?php endif; ?>
+                                    <?php endif;?>
                                     <div class="title title-big">
-                                        <p>Wybierz rozmiar</p>
+                                        <p>Wybierz wielkość</p>
                                     </div>
                                     <div class="sizes">
-                                        <p class="validation-error error">Proszę wybrać rozmiar</p>
-                                        <?php if (have_rows('z_naglowkuem')) : $sizeIndex = 0; ?>
-                                            <?php while (have_rows('z_naglowkuem')) : the_row();  ?>
-                                                <?php if (have_rows('taste_repeater')) : ?>
+                                        <p class="validation-error error">Proszę wybrać wielkość</p>
+                                        <?php if (have_rows('z_naglowkuem')): $sizeIndex = 0;?>
+		                                            <?php while (have_rows('z_naglowkuem')): the_row();?>
+				                                                <?php if (have_rows('taste_repeater')): ?>
 
-                                                    <?php while (have_rows('taste_repeater')) : the_row(); ?>
-                                                        <div class="taste-sizes variant-select" data-class="<?php echo  $sizeIndex ?>">
-                                                            <?php $sizeClass = 'size-checkbox-' . $sizeIndex; // Уникальный класс для размера 
-                                                            ?>
-                                                            <div class="extra-product-data-input">
-                                                                <label class="<?php echo $sizeClass; ?> size-check checkbox item" data-class="<?php echo $sizeIndex; ?>">
-                                                                    <input type="checkbox" class="size-checkbox box" name="addition_taste" value="<?php the_sub_field('cena_malego'); ?>" data-name="<?php the_sub_field('nazwa_smaku'); ?> mały">
-                                                                    <div class="label">
-                                                                        <p class="variant">Mały</p>
-                                                                        <p class="desc"><?php the_sub_field('porcji_w_malym'); ?> porcji</p>
-                                                                    </div>
-                                                                    <div class="price">
-                                                                        <p><span class="price"><span class="woocommerce-Price-amount amount"><?php the_sub_field('cena_malego'); ?> zł</span></span></p>
-                                                                    </div>
-                                                                </label>
-                                                            </div>
-                                                            <div class="extra-product-data-input">
-                                                                <label class="<?php echo $sizeClass; ?> size-check checkbox item" data-class="<?php echo $sizeIndex; ?>">
-                                                                    <input type="checkbox" class="size-checkbox box mid-check" name="addition_taste" value="<?php the_sub_field('cena_sredniego'); ?>" data-name="<?php the_sub_field('nazwa_smaku'); ?> średni">
-                                                                    <div class="label">
-                                                                        <p class="variant">Średni</p>
-                                                                        <p class="desc"><?php the_sub_field('porcji_w_srednim'); ?> porcji</p>
-                                                                    </div>
-                                                                    <div class="price">
-                                                                        <p><span class="price"><span class="woocommerce-Price-amount amount"><?php the_sub_field('cena_sredniego'); ?> zł</span></span></p>
-                                                                    </div>
-                                                                </label>
-                                                            </div>
-                                                            <div class="extra-product-data-input">
-                                                                <label class="<?php echo $sizeClass; ?> size-check checkbox item" data-class="<?php echo $sizeIndex; ?>">
-                                                                    <input type="checkbox" class="size-checkbox box" name="addition_taste" value="<?php the_sub_field('cena_duzego'); ?>" data-name="<?php the_sub_field('nazwa_smaku'); ?> duży">
-                                                                    <div class="label">
-                                                                        <p class="variant">Duży</p>
-                                                                        <p class="desc"><?php the_sub_field('porcji_w_duzym'); ?> porcji</p>
-                                                                    </div>
-                                                                    <div class="price">
-                                                                        <p><span class="price"><span class="woocommerce-Price-amount amount"><?php the_sub_field('cena_duzego'); ?> zł</span></span></p>
-                                                                    </div>
-                                                                </label>
-                                                            </div>
+				                                                    <?php while (have_rows('taste_repeater')): the_row();?>
+						                                                        <div class="taste-sizes variant-select" data-class="<?php echo $sizeIndex ?>">
+						                                                            <?php $sizeClass = 'size-checkbox-' . $sizeIndex; // Уникальный класс для размера
+            ?>
+						                                                            <div class="extra-product-data-input">
+						                                                                <label class="<?php echo $sizeClass; ?> size-check checkbox item" data-class="<?php echo $sizeIndex; ?>">
+						                                                                    <input type="checkbox" class="size-checkbox box" name="addition_taste" value="<?php the_sub_field('cena_malego');?>" data-name="<?php the_sub_field('nazwa_smaku');?> mały">
+						                                                                    <div class="label">
+						                                                                        <p class="variant">Mały</p>
+						                                                                        <p class="desc"><?php the_sub_field('porcji_w_malym');?> porcji</p>
+						                                                                    </div>
+						                                                                    <div class="price">
+						                                                                        <p><span class="price"><span class="woocommerce-Price-amount amount"><?php the_sub_field('cena_malego');?> zł</span></span></p>
+						                                                                    </div>
+						                                                                </label>
+						                                                            </div>
+						                                                            <div class="extra-product-data-input">
+						                                                                <label class="<?php echo $sizeClass; ?> size-check checkbox item" data-class="<?php echo $sizeIndex; ?>">
+						                                                                    <input type="checkbox" class="size-checkbox box mid-check" name="addition_taste" value="<?php the_sub_field('cena_sredniego');?>" data-name="<?php the_sub_field('nazwa_smaku');?> średni">
+						                                                                    <div class="label">
+						                                                                        <p class="variant">Średni</p>
+						                                                                        <p class="desc"><?php the_sub_field('porcji_w_srednim');?> porcji</p>
+						                                                                    </div>
+						                                                                    <div class="price">
+						                                                                        <p><span class="price"><span class="woocommerce-Price-amount amount"><?php the_sub_field('cena_sredniego');?> zł</span></span></p>
+						                                                                    </div>
+						                                                                </label>
+						                                                            </div>
+						                                                            <div class="extra-product-data-input">
+						                                                                <label class="<?php echo $sizeClass; ?> size-check checkbox item" data-class="<?php echo $sizeIndex; ?>">
+						                                                                    <input type="checkbox" class="size-checkbox box" name="addition_taste" value="<?php the_sub_field('cena_duzego');?>" data-name="<?php the_sub_field('nazwa_smaku');?> duży">
+						                                                                    <div class="label">
+						                                                                        <p class="variant">Duży</p>
+						                                                                        <p class="desc"><?php the_sub_field('porcji_w_duzym');?> porcji</p>
+						                                                                    </div>
+						                                                                    <div class="price">
+						                                                                        <p><span class="price"><span class="woocommerce-Price-amount amount"><?php the_sub_field('cena_duzego');?> zł</span></span></p>
+						                                                                    </div>
+						                                                                </label>
+						                                                            </div>
 
 
 
-                                                            <?php $sizeIndex++; // Увеличиваем индекс 
-                                                            ?>
-                                                        </div>
-                                                    <?php endwhile; ?>
+						                                                            <?php $sizeIndex++; // Увеличиваем индекс
+            ?>
+						                                                        </div>
+						                                                    <?php endwhile;?>
 
-                                                <?php endif; ?>
+				                                                <?php endif;?>
 
-                                            <?php endwhile; ?>
-                                        <?php endif; ?>
+		                                            <?php endwhile;?>
+                                        <?php endif;?>
 
                                     </div>
                                 </div>
 
-                            <?php endif; ?>
+                            <?php endif;?>
 
 
 
-                            <?php if (get_field('addition_toper') == 1) : ?>
+                            <?php if (get_field('addition_toper') == 1): ?>
                                 <div class="title title-big">
                                     <p>Wybierz topper</p>
                                 </div>
                                 <div class="toppers">
-                                    <?php if (have_rows('osobny_topper')) : $topperIndex = 0;
-                                        while (have_rows('osobny_topper')) : the_row();  ?>
+                                    <?php if (have_rows('osobny_topper')): $topperIndex = 0;
+    while (have_rows('osobny_topper')): the_row();?>
 
-                                            <div class="extra-product-data-input">
-                                                <label class="single-topper checkbox" id="topper-<?php echo $topperIndex; ?>">
-                                                    <input type="checkbox" class="topper-checkbox box value validate" name="additional_topper" value="<?php the_sub_field('cena'); ?>" data-name="<?php the_sub_field('nazwa'); ?>">
-                                                    <div class="inside-topper-row label">
+				                                            <div class="extra-product-data-input">
+				                                                <label class="single-topper checkbox" id="topper-<?php echo $topperIndex; ?>">
+				                                                    <input type="checkbox" class="topper-checkbox box value validate" name="additional_topper" value="<?php the_sub_field('cena');?>" data-name="<?php the_sub_field('nazwa');?>">
+				                                                    <div class="inside-topper-row label">
 
-                                                        <?php $obrazek = get_sub_field('obrazek'); ?>
-                                                        <?php if ($obrazek) : ?>
-                                                            <div class="image">
-                                                                <img src="<?php echo esc_url($obrazek['url']); ?>" alt="<?php echo esc_attr($obrazek['alt']); ?>" />
-                                                            </div>
-                                                        <?php endif; ?>
+				                                                        <?php $obrazek = get_sub_field('obrazek');?>
+				                                                        <?php if ($obrazek): ?>
+				                                                            <div class="image">
+				                                                                <img src="<?php echo esc_url($obrazek['url']); ?>" alt="<?php echo esc_attr($obrazek['alt']); ?>" />
+				                                                            </div>
+				                                                        <?php endif;?>
 
-                                                        <p><?php the_sub_field('nazwa'); ?></p>
-                                                    </div>
-                                                </label>
+		                                                        <p><?php the_sub_field('nazwa');?></p>
+		                                                    </div>
+		                                                </label>
 
-                                            </div>
-                                    <?php endwhile;
-                                    endif; ?>
+		                                            </div>
+		                                    <?php endwhile;
+endif;?>
                                 </div>
-                            <?php endif; ?>
+                            <?php endif;?>
                         </div>
 
 
@@ -291,7 +291,7 @@ if ($terms[0]->parent > 0) {
                             </div>
 
                         </div>
-                        <?php if (get_field('addition_taste') == 1) : ?>
+                        <?php if (get_field('addition_taste') == 1): ?>
                             <script>
                                 const elementsClick = document.querySelectorAll(".active ");
 
@@ -440,41 +440,42 @@ if ($terms[0]->parent > 0) {
                                         updateTotalPrice();
                                     });
 
+                                    $(".swiecka").click(function() {
+                                        $(".fontanna").removeClass("active");
+                                        $(".fontanna .checkbox").removeClass("active");
+                                        $(".fontanna").each(function() {
+                                            var dataValue = $(this).attr("data-value");
+                                            dataValue = dataValue.replace(/checked/g, '');
+                                            $(this).attr("data-value", dataValue);
+                                        });
+                                        updateExtraDataField();
+                                        console.log("byl klik");
+                                    });
+
+                                    $(".fontanna").click(function() {
+                                        $(".swiecka").removeClass("active");
+                                        $(".swiecka .checkbox").removeClass("active");
+                                        $(".swiecka").each(function() {
+                                            var dataValue = $(this).attr("data-value");
+                                            dataValue = dataValue.replace(/checked/g, '');
+                                            $(this).attr("data-value", dataValue);
+                                        });
+                                        updateExtraDataField();
+                                        console.log("byl klik");
+                                    });
+
+
                                 });
                             </script>
-                        <?php endif; ?>
-                        <?php if (get_field('show_extra_data_section')) : ?>
+                        <?php endif;?>
+                        <?php if (get_field('show_extra_data_section')): ?>
                             <div class="title title-big">
                                 <p>Wybierz dodatki GRATIS!</p>
                             </div>
-                            <?php if (get_field('extra_candle')) : ?>
-                                <div class="extra-product-data-input" data-value="" data-label="Świeczka">
-                                    <div class="checkbox">
-                                        <div class="box"></div>
-                                        <div class="label">Świeczka</div>
-                                    </div>
-                                    <div class="input number">
-                                        <label for="">Ilość świeczek</label>
-                                        <input class="value validate" type="number" value="1" min="1" max="100">
-                                    </div>
-                                </div>
-                            <?php endif; ?>
 
-                            <?php if (get_field('extra_candle_number')) : ?>
-                                <div class="extra-product-data-input" data-value="" data-label="">
-                                    <div class="checkbox">
-                                        <div class="box"></div>
-                                        <div class="label">Fontanna</div>
-                                    </div>
-                                    <div class="input number" style="display: none!important;">
-                                        <label for="">Liczba</label>
-                                        <input class="value validate" type="text" value="Fontanna">
-                                    </div>
-                                </div>
-                            <?php endif; ?>
 
-                            <?php if (get_field('extra_text')) : ?>
-                                <div class="extra-product-data-input" data-value="" data-label="Dodaj napis">
+                            <?php if (get_field('extra_text')): ?>
+                                <div class="extra-product-data-input gratis" data-value="" data-label="Dodaj napis">
                                     <div class="checkbox">
                                         <div class="box"></div>
                                         <div class="label">Dodaj napis</div>
@@ -484,9 +485,42 @@ if ($terms[0]->parent > 0) {
                                         <input class="value validate" type="text" maxlength="30" class="text">
                                     </div>
                                 </div>
-                            <?php endif; ?>
+                            <?php endif;?>
+                            <?php if (get_field('extra_candle')): ?>
+                                <?php if (get_field('extra_candle_number')): ?>
+                                    <div class="two-row">
+                                    <?php endif;?>
+                                <div class="extra-product-data-input gratis swiecka" data-value="" data-label="Świeczka">
+                                    <div class="checkbox">
+                                        <div class="box"></div>
+                                        <div class="label">Świeczka</div>
+                                    </div>
+                                    <div class="input number">
+                                        <label for="">Ilość świeczek</label>
+                                        <input class="value validate" type="number" value="1" min="1" max="100">
+                                    </div>
+                                </div>
+                            <?php endif;?>
 
-                            <?php if (get_field('extra_photo')) : ?>
+                            <?php if (get_field('extra_candle_number')): ?>
+                                <div class="extra-product-data-input gratis fontanna" data-value="" data-label="">
+                                    <div class="checkbox">
+                                        <div class="box"></div>
+                                        <div class="label">Fontanna</div>
+                                    </div>
+                                    <div class="input number" style="display: none!important;">
+                                        <label for="">Liczba</label>
+                                        <input class="value validate" type="text" value="Fontanna">
+                                    </div>
+                                </div>
+                                <?php if (get_field('extra_candle')): ?>
+                                </div>
+                            <?php endif;?>
+                            <?php endif;?>
+
+
+
+                            <?php if (get_field('extra_photo')): ?>
                                 <div class="title title-big">
                                     <p>Dodaj zdjęcie</p>
                                 </div>
@@ -501,8 +535,10 @@ if ($terms[0]->parent > 0) {
                                         <div id="image-base64" class="image-preview value"></div>
                                     </div>
                                 </div>
-                            <?php endif; ?>
-                        <?php endif; ?>
+                            <?php endif;?>
+                        <?php endif;?>
+
+
 
                     </div>
                 </div>
@@ -512,7 +548,7 @@ if ($terms[0]->parent > 0) {
                 <div class="product-validation-info typo" id="validation-info"></div>
 
 
-                <?php if ($product->price !== '') : ?>
+                <?php if ($product->price !== ''): ?>
                     <div class="product-add-to-cart-section">
                         <div class="total">
                             <div class="label">Razem</div>
@@ -539,29 +575,32 @@ if ($terms[0]->parent > 0) {
                         <div class="add-to-cart">
 
                             <?php
-                            defined('ABSPATH') || exit;
-                            global $product;
-                            if (!$product->is_purchasable()) return;
-                            echo wc_get_stock_html($product);
-                            if ($product->is_in_stock()) : ?>
-                                <?php do_action('woocommerce_before_add_to_cart_form'); ?>
+defined('ABSPATH') || exit;
+global $product;
+if (!$product->is_purchasable()) {
+    return;
+}
 
-                                <?php do_action('woocommerce_before_add_to_cart_button'); ?>
-                                <?php do_action('woocommerce_before_add_to_cart_quantity'); ?>
+echo wc_get_stock_html($product);
+if ($product->is_in_stock()): ?>
+                                <?php do_action('woocommerce_before_add_to_cart_form');?>
+
+                                <?php do_action('woocommerce_before_add_to_cart_button');?>
+                                <?php do_action('woocommerce_before_add_to_cart_quantity');?>
 
                                 <button type="submit" name="add-to-cart" value="<?php echo esc_attr($product->get_id()); ?>" class="btn btn-cart"><?php echo esc_html($product->single_add_to_cart_text()); ?></button>
-                                <?php do_action('woocommerce_after_add_to_cart_button'); ?>
+                                <?php do_action('woocommerce_after_add_to_cart_button');?>
 
-                                <?php do_action('woocommerce_after_add_to_cart_form'); ?>
-                            <?php endif; ?>
+                                <?php do_action('woocommerce_after_add_to_cart_form');?>
+                            <?php endif;?>
 
                         </div>
                     </div>
-                <?php else : ?>
+                <?php else: ?>
 
-                    <?php include_once __DIR__ . '/no-price.php'; ?>
+                    <?php include_once __DIR__ . '/no-price.php';?>
 
-                <?php endif; ?>
+                <?php endif;?>
                 <div class="debug-section typo">
                     <p>Dodatkowe parametry (dla programisty)</p>
                     <div id="debug"></div>
@@ -569,20 +608,20 @@ if ($terms[0]->parent > 0) {
             </form>
             <div class="hide-default-wc-cart">
                 <?php
-                /**
-                 * Hook: woocommerce_single_product_summary.
-                 *
-                 * @hooked woocommerce_template_single_title - 5
-                 * @hooked woocommerce_template_single_rating - 10
-                 * @hooked woocommerce_template_single_price - 10
-                 * @hooked woocommerce_template_single_excerpt - 20
-                 * @hooked woocommerce_template_single_add_to_cart - 30
-                 * @hooked woocommerce_template_single_meta - 40
-                 * @hooked woocommerce_template_single_sharing - 50
-                 * @hooked WC_Structured_Data::generate_product_data() - 60
-                 */
-                do_action('woocommerce_single_product_summary');
-                ?>
+/**
+ * Hook: woocommerce_single_product_summary.
+ *
+ * @hooked woocommerce_template_single_title - 5
+ * @hooked woocommerce_template_single_rating - 10
+ * @hooked woocommerce_template_single_price - 10
+ * @hooked woocommerce_template_single_excerpt - 20
+ * @hooked woocommerce_template_single_add_to_cart - 30
+ * @hooked woocommerce_template_single_meta - 40
+ * @hooked woocommerce_template_single_sharing - 50
+ * @hooked WC_Structured_Data::generate_product_data() - 60
+ */
+do_action('woocommerce_single_product_summary');
+?>
             </div>
         </div>
     </div>
@@ -599,4 +638,4 @@ if ($terms[0]->parent > 0) {
 do_action('woocommerce_after_single_product_summary');
 ?>
 
-<?php do_action('woocommerce_after_single_product'); ?>
+<?php do_action('woocommerce_after_single_product');?>

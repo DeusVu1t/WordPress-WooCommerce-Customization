@@ -4,6 +4,7 @@ function navbar_menus() {
 	register_nav_menus( array(
 		'primary_left' 	=> 'Primary left',
 		'primary_right' 	=> 'Primary right',
+		'primary_top' 	=> 'Primary top',
 		'mobile' 	=> 'Mobile',
 		'footer_1' 	=> 'Footer 1',
 		'footer_2' 	=> 'Footer 2',
